@@ -6,6 +6,7 @@ import Animate from 'rc-animate';
 import Row from '../grid/row';
 import Col, { ColProps } from '../grid/col';
 import Icon from '../icon';
+import Tooltip from '../tooltip';
 import { ConfigConsumer, ConfigConsumerProps } from '../config-provider';
 import warning from '../_util/warning';
 import { tuple } from '../_util/type';
@@ -20,6 +21,7 @@ export interface FormItemProps {
   id?: string;
   label?: React.ReactNode;
   labelAlign?: 'left' | 'right';
+  labelDesc?: React.ReactNode;
   labelCol?: ColProps;
   wrapperCol?: ColProps;
   help?: React.ReactNode;
@@ -44,6 +46,7 @@ export default class FormItem extends React.Component<FormItemProps, any> {
     prefixCls: PropTypes.string,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     labelAlign: PropTypes.string,
+    labelDesc: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     labelCol: PropTypes.object,
     help: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
     validateStatus: PropTypes.oneOf(ValidateStatuses),
@@ -336,7 +339,7 @@ export default class FormItem extends React.Component<FormItemProps, any> {
           labelCol: contextLabelCol,
           colon: contextColon,
         }: FormContextProps) => {
-          const { label, labelCol, colon, id } = this.props;
+          const { label, labelDesc, labelCol, colon, id } = this.props;
           const required = this.isRequired();
 
           const mergedLabelCol: ColProps =
@@ -362,6 +365,17 @@ export default class FormItem extends React.Component<FormItemProps, any> {
             [`${prefixCls}-item-required`]: required,
             [`${prefixCls}-item-no-colon`]: !computedColon,
           });
+
+          if (labelDesc) {
+            labelChildren = (
+              <React.Fragment>
+                {labelChildren}
+                <Tooltip placement="topLeft" arrowPointAtCenter title={labelDesc}>
+                  <Icon type="question-circle" className={classNames(`${prefixCls}-label-desc`)} />
+                </Tooltip>
+              </React.Fragment>
+            );
+          }
 
           return label ? (
             <Col {...mergedLabelCol} className={labelColClassName}>

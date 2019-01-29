@@ -60,6 +60,7 @@ class FormLayoutDemo extends React.Component {
           </Form.Item>
           <Form.Item
             label="Field B"
+            labelDesc="This is description for Field B"
             {...formItemLayout}
           >
             <Input placeholder="input placeholder" />
