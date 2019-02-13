@@ -91,6 +91,12 @@ declare module '*.json' {
 
 declare module 'lodash/debounce';
 
+declare module 'lodash/merge';
+
+declare module 'lodash/chunk';
+
+declare module 'lodash/isEqual';
+
 declare module 'lodash/padStart';
 
 declare module 'lodash/padEnd';
@@ -106,3 +112,5 @@ declare module 'raf';
 declare module 'react-lifecycles-compat';
 
 declare module 'react-copy-to-clipboard';
+
+declare module 'css-element-queries';
