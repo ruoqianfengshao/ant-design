@@ -44,6 +44,8 @@ title: Select
 | notFoundContent | 当下拉列表为空时显示的内容 | string | 'Not Found' |
 | optionFilterProp | 搜索时过滤对应的 option 属性，如设置为 children 表示对内嵌内容进行搜索 | string | value |
 | optionLabelProp | 回填到选择框的 Option 的属性值，默认是 Option 的子元素。比如在子元素需要高亮效果时，此值可以设为 `value`。 | string | `children` （combobox 模式下为 `value`） |
+| optionNode | 自定义 option 的 react 节点 | function({valueKey, labelKey, option, Option}) => ReactNode | `function ({valueKey, labelKey, option, Option}) => <Option {...option} key={option[valueKey]} value={option[valueKey]} option={option}>{option[labelKey]}</Option>` |
+| options | json 形式描述 options 数据，option 数组 | OptionProps[] | null |
 | placeholder | 选择框默认文字 | string | - |
 | showArrow | 是否显示下拉小箭头 | boolean | true |
 | showSearch | 使单选模式可搜索 | boolean | false |
@@ -61,7 +63,7 @@ title: Select
 | onMouseEnter | 鼠标移入时回调 | function | - |
 | onMouseLeave | 鼠标移出时回调 | function | - |
 | onPopupScroll | 下拉列表滚动时的回调 | function | - |
-| onSearch | 文本框值变化时回调 | function(value: string) |  |
+| onSearch | 文本框值变化时回调，异步请返回 promise | function(value: string) => Promise \| Array \| null |  |
 | onSelect | 被选中时调用，参数为选中项的 value (或 key) 值 | function(value, option:Option) | - |
 | defaultOpen | 是否默认展开下拉菜单 | boolean | - |
 | open | 是否展开下拉菜单 | boolean | - |

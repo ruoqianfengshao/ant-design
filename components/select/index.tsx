@@ -4,6 +4,7 @@ import RcSelect, { Option, OptGroup } from 'rc-select';
 import classNames from 'classnames';
 import { ConfigConsumer, ConfigConsumerProps, RenderEmptyHandler } from '../config-provider';
 import omit from 'omit.js';
+import isEqual from 'lodash/isEqual';
 import warning from '../_util/warning';
 import Icon from '../icon';
 import { tuple } from '../_util/type';
@@ -49,10 +50,29 @@ export interface LabeledValue {
 
 export type SelectValue = string | string[] | number | number[] | LabeledValue | LabeledValue[];
 
+export type OptionType = {
+  label: string;
+  value: any;
+  [index: string]: any;
+};
+
+export type OptionsType = OptionType[];
+
+export type OptionNodeProps = {
+  labelKey: string;
+  valueKey: string;
+  option: OptionType;
+  Option: any;
+};
+
 export interface SelectProps<T = SelectValue> extends AbstractSelectProps {
   value?: T;
+  valueKey?: string;
+  labelKey?: string;
   defaultValue?: T;
   mode?: 'default' | 'multiple' | 'tags' | 'combobox' | string;
+  options?: OptionsType;
+  optionNode?: (option: any) => React.ReactNode;
   optionLabelProp?: string;
   firstActiveValue?: string | string[];
   onChange?: (value: T, option: React.ReactElement<any> | React.ReactElement<any>[]) => void;
@@ -75,6 +95,10 @@ export interface SelectProps<T = SelectValue> extends AbstractSelectProps {
   removeIcon?: React.ReactNode;
   clearIcon?: React.ReactNode;
   menuItemSelectedIcon?: React.ReactNode;
+}
+
+export interface SelectState {
+  options: OptionsType;
 }
 
 export interface OptionProps {
@@ -109,7 +133,7 @@ const SelectPropTypes = {
 // => It is needless to export the declaration of below two inner components.
 // export { Option, OptGroup };
 
-export default class Select<T = SelectValue> extends React.Component<SelectProps<T>, {}> {
+export default class Select<T = SelectValue> extends React.Component<SelectProps<T>, SelectState> {
   static Option = Option as React.ClassicComponentClass<OptionProps>;
   static OptGroup = OptGroup as React.ClassicComponentClass<OptGroupProps>;
 
@@ -119,6 +143,13 @@ export default class Select<T = SelectValue> extends React.Component<SelectProps
     showSearch: false,
     transitionName: 'slide-up',
     choiceTransitionName: 'zoom',
+    optionNode: ({ valueKey, labelKey, option }: OptionNodeProps) => {
+      return (
+        <Option {...option} key={option[valueKey]} value={option[valueKey]} option={option}>
+          {option[labelKey]}
+        </Option>
+      );
+    },
   };
 
   static propTypes = SelectPropTypes;
@@ -127,6 +158,9 @@ export default class Select<T = SelectValue> extends React.Component<SelectProps
 
   constructor(props: SelectProps<T>) {
     super(props);
+    this.state = {
+      options: this.props.options || [],
+    };
 
     warning(
       props.mode !== 'combobox',
@@ -136,6 +170,43 @@ export default class Select<T = SelectValue> extends React.Component<SelectProps
         'please use AutoComplete instead',
     );
   }
+
+  componentWillReceiveProps(nextProps: SelectProps<T>) {
+    if (!isEqual(nextProps.options, this.state.options) && nextProps.options) {
+      this.setState({ options: nextProps.options });
+    }
+  }
+
+  onFocus = () => {
+    if (this.props.onFocus) {
+      this.props.onFocus();
+      return;
+    }
+
+    if (this.props.onSearch) {
+      this.props.onSearch('');
+      return;
+    }
+  };
+
+  onSearch = (value: string) => {
+    const { onSearch } = this.props;
+
+    if (typeof onSearch === 'function') {
+      const result = onSearch(value);
+      if (result) {
+        if (Object.prototype.toString.call(result) === '[object Promise]') {
+          result.then((data: any) => {
+            this.setState({ options: data });
+          });
+        }
+
+        if (Object.prototype.toString.call(result) === '[object Array]') {
+          this.setState({ options: result });
+        }
+      }
+    }
+  };
 
   focus() {
     this.rcSelect.focus();
@@ -198,8 +269,11 @@ export default class Select<T = SelectValue> extends React.Component<SelectProps
     const {
       prefixCls: customizePrefixCls,
       className = '',
+      valueKey = 'value',
+      labelKey = 'title',
       size,
       mode,
+      optionNode,
       getPopupContainer,
       removeIcon,
       clearIcon,
@@ -208,6 +282,23 @@ export default class Select<T = SelectValue> extends React.Component<SelectProps
       ...restProps
     } = this.props;
     const rest = omit(restProps, ['inputIcon']);
+
+    const _children = restProps.children
+      ? restProps.children
+      : this.state.options.map(option => {
+          return optionNode ? (
+            optionNode({
+              labelKey,
+              valueKey,
+              option,
+              Option,
+            })
+          ) : (
+            <Option {...option} key={option[valueKey]} value={option[valueKey]} option={option}>
+              {option[labelKey]}
+            </Option>
+          );
+        });
 
     const prefixCls = getPrefixCls('select', customizePrefixCls);
     const cls = classNames(
@@ -265,6 +356,9 @@ export default class Select<T = SelectValue> extends React.Component<SelectProps
         menuItemSelectedIcon={finalMenuItemSelectedIcon}
         showArrow={showArrow}
         {...rest}
+        children={_children}
+        onFocus={this.onFocus}
+        onSearch={this.onSearch}
         {...modeConfig}
         prefixCls={prefixCls}
         className={cls}
