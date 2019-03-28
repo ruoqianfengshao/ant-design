@@ -2,7 +2,7 @@ import React, { Component, FormEvent } from 'react';
 import classNames from 'classnames';
 import * as CssElementQuery from 'css-element-queries';
 import omit from 'omit.js';
-import { Form } from '..';
+import Form from '../form';
 import Fields from './Fields';
 import Field from './Field';
 import { FormProvider } from './common';
@@ -11,8 +11,8 @@ import { ConfigConsumer, ConfigConsumerProps } from '../config-provider';
 
 type FormbuilderProps = {
   style?: Object;
-  columnMode: String;
-  validateScroll: Boolean;
+  columnMode: string;
+  validateScroll?: Boolean;
   customFields?: Object;
   onSimpleSubmit?: (props: any, form: FormProps, event: FormEvent<HTMLFormElement>) => void;
   form: FormComponentProps;
@@ -43,10 +43,10 @@ class Formbuilder extends Component<FormbuilderProps & FormProps, FormbuilderSta
   static Field = Field;
 
   static defaultProps = {
-    layout: 'vertical' as FormLayout,
+    layout: 'horizontal' as FormLayout,
     hideRequiredMark: false,
     validateScroll: true,
-    columnMode: 'single',
+    columnMode: 'dynamic',
     onSimpleSubmit: (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
     },
@@ -89,11 +89,15 @@ class Formbuilder extends Component<FormbuilderProps & FormProps, FormbuilderSta
   }
 
   serializeData = (values: any) => {
-    const result: any = values;
+    const result: any = {};
     Object.keys(values).forEach(name => {
       const field = this.state.fields[name] || {};
-      if (field.getData) {
-        result[name] = field.getData(values[name]);
+      if (values[name] !== null && values[name] !== undefined) {
+        if (field.getData) {
+          result[name] = field.getData(values[name]);
+        } else {
+          result[name] = values[name]
+        }
       }
     });
     return result;
@@ -115,19 +119,6 @@ class Formbuilder extends Component<FormbuilderProps & FormProps, FormbuilderSta
     } else if (onSubmit) {
       onSubmit(event);
     }
-  }
-
-  getReadyValue() {
-    return this.props.form.validateFields((err, values) => {
-      if (err) {
-        return false;
-      }
-
-      return {
-        values: this.serializeData(values),
-        form: this.props.form,
-      };
-    });
   }
 
   syncFields = (fields: any) => {

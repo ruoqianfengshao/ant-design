@@ -16,6 +16,7 @@ import Transfer from '../transfer';
 import Slider from '../slider';
 import Form from '../form';
 import { FormItemProps } from '../form/FormItem';
+import { defaultGetValueFromEvent } from './common';
 import { ConfigConsumer, ConfigConsumerProps } from '../config-provider';
 
 export type FieldProps = {
@@ -32,11 +33,17 @@ export interface FieldItemProps extends FormItemProps {
   type: string;
   show: boolean;
   name: string;
+  value: any;
   initialValue: any;
-  elementProps: any;
+  elementProps: ElementProps;
   validator: Array<Object>;
   follow: any;
+  resetValue: boolean;
   emptyMessage: string;
+  getValueFromEvent: (e: any) => any;
+  onFieldChange:
+    | ((values: { [key: string]: any }, form: any, options: any) => FieldItemProps[])
+    | FieldItemProps[];
 }
 
 export type ElementProps = {
@@ -52,8 +59,8 @@ const elements: {
   number: InputNumber,
   treeSelect: TreeSelect,
   tree: Tree,
-  radio: Radio,
-  checkbox: Checkbox,
+  radio: Radio.Group,
+  checkbox: Checkbox.Group,
   select: Select,
   cascader: Cascader,
   date: DatePicker,
@@ -62,6 +69,7 @@ const elements: {
   switch: Switch,
   transfer: Transfer,
   slider: Slider,
+  textarea: Input.TextArea,
 };
 
 export default class Field extends React.Component<FieldProps> {
@@ -79,6 +87,55 @@ export default class Field extends React.Component<FieldProps> {
       [this.props.field.name]: this.props.field,
     });
   }
+
+  dealRelations = async (value: any, currentInfo?: any) => {
+    const relationFieldsProps = {};
+    const relationValues = {};
+    const { onFieldChange, name } = this.props.field;
+
+    if (onFieldChange) {
+      await new Promise(async (resolve) => {
+        const actionFields =
+          onFieldChange instanceof Array
+            ? onFieldChange
+            : (await onFieldChange(
+                {
+                  ...this.props.form.getFieldsValue(),
+                  [name]: value,
+                },
+                this.props.form,
+                currentInfo,
+              )) || [];
+
+        actionFields.forEach(field => {
+          const realField = field;
+          if (realField.value !== undefined) {
+            Object.assign(relationValues, { [realField.name]: realField.value });
+          }
+
+          if (realField.resetValue === true) {
+            Object.assign(relationValues, { [realField.name]: undefined });
+          }
+
+          delete realField.value;
+          Object.assign(relationFieldsProps, { [realField.name]: realField });
+          resolve();
+        });
+      });
+
+      this.props.form.setFieldsValue(relationValues);
+      this.props.syncFields(relationFieldsProps);
+    }
+  };
+
+  commonValueHandler = (e: any) => {
+    const value = this.props.field.getValueFromEvent
+      ? this.props.field.getValueFromEvent(e)
+      : defaultGetValueFromEvent(e);
+    this.dealRelations(value);
+
+    return value;
+  };
 
   renderField = ({ getPrefixCls }: ConfigConsumerProps) => {
     const {
@@ -113,6 +170,7 @@ export default class Field extends React.Component<FieldProps> {
             },
             ...validator,
           ],
+          getValueFromEvent: this.commonValueHandler,
         })(<Element {...elementProps} />)}
         <span className={`${prefixCls}-follow`}>{follow}</span>
       </Item>

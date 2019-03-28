@@ -8,7 +8,7 @@ title: Formbuilder
 
 具有数据收集、校验和提交功能的表单，包含复选框、单选框、输入框、下拉选择框等元素。
 
-## 表单
+## 表单排列
 
 我们为 `Formbuilder` 提供了以下三种排列方式：
 
@@ -39,7 +39,7 @@ title: Formbuilder
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| columnMode | Formbuilder 内置两种列模式，`single` 和 `multi`, `single` 在任何情况下都是单列；`multi` 会随表单容器宽度响应 | string | `multi` |
+| columnMode | Formbuilder 内置两种列模式，`static` 和 `dynamic`, `static` 在任何情况下都是固定列；`dynamic` 会随表单容器宽度响应 | string | `dynamic` |
 | layout | 表单布局 | 'horizontal'\|'vertical'\|'inline' | 'vertical' |
 | onSubmit | 数据验证成功后回调事件 | Function({err, values}, form, e) |  |
 | validateScroll | 是否滚动至校验出错误的 field | 'boolean' | true |

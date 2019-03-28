@@ -1,10 +1,44 @@
 @import '../../style/themes/default';
 
 @form-builder-prefix-cls: ~'@{ant-prefix}-form-builder';
+@form-prefix-cls: ~'@{ant-prefix}-form';
 @form-builder-field: ~'@{form-builder-prefix-cls}-field';
 
 .@{form-builder-prefix-cls} {
   .@{form-builder-field}-hidden {
     display: none;
+  }
+
+  .@{form-prefix-cls}-horizontal {
+    .@{form-prefix-cls}-item-label {
+      vertical-align: top;
+      width: @form-item-label-width;
+      line-height: @form-item-line-height;
+    }
+
+    .ant-checkbox-wrapper {
+      margin-left: 0;
+      line-height: @form-item-line-height;
+
+      &:not(:last-child)  {
+        margin-right: 8px;
+      }
+    }
+
+    .@{form-prefix-cls}-item-control-wrapper {
+      display: inline-block;
+      vertical-align: top;
+      width: @form-item-control-width;
+      max-width: calc(100% - @form-item-label-width - 10px);
+      line-height: @form-item-line-height;
+
+      &:only-child {
+        margin-left: @form-item-label-width;
+      }
+    }
+
+    .@{form-prefix-cls}-item-control {
+      line-height: calc(@form-item-line-height + 1px);
+    }
   }
 }
