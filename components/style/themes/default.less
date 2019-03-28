@@ -60,9 +60,9 @@
 @heading-2-size: ceil(@font-size-base * 2.14);
 @heading-3-size: ceil(@font-size-base * 1.71);
 @heading-4-size: ceil(@font-size-base * 1.42);
-@line-height-base : 1.5;
-@border-radius-base : 4px;
-@border-radius-sm : 2px;
+@line-height-base: 1.5;
+@border-radius-base: 4px;
+@border-radius-sm: 2px;
 
 // vertical paddings
 @padding-lg: 24px; // containers
@@ -265,6 +265,7 @@
 @zindex-dropdown: 1050;
 @zindex-picker: 1050;
 @zindex-tooltip: 1060;
+@toast-zindex: 1999;
 
 // Animation
 @animation-duration-slow: 0.3s; // Modal
@@ -279,6 +280,12 @@
 @form-item-trailing-colon: true;
 @form-vertical-label-padding: 0 0 8px;
 @form-vertical-label-margin: 0;
+@form-item-margin-bottom: 20px;
+@label-color: #666;
+@form-item-label-width: 8em;
+@form-item-line-height: 32px;
+@form-item-control-width: 400px;
+@modal-form-item-control-width: 300px;
 
 // Input
 // ---
@@ -346,6 +353,12 @@
 @modal-header-bg: @component-background;
 @modal-footer-bg: tranparent;
 @modal-mask-bg: fade(@black, 65%);
+
+// Viewer
+// --
+@viewer-attribute-color: @text-color;
+@viewer-mask-bg: fade(@black, 65%);
+@viewer-navbar-bg: fade(@black, 35%);
 
 // Progress
 // --

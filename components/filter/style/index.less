@@ -1,0 +1,43 @@
+@import '../../style/themes/default';
+@import '../../style/mixins/index';
+@import '../../style/core/motion/move.less';
+
+@filter-prefix-cls: ~'@{ant-prefix}-filter';
+
+.@{filter-prefix-cls} {
+
+  .@{filter-prefix-cls}-first-line {
+    &:after {
+      content: '';
+      clear: both;
+      display    : block;
+      height     : 0;
+      overflow   : hidden;
+      visibility : hidden;
+    }
+  }
+
+  .@{filter-prefix-cls}-line-fields {
+    width: calc(100% - 150px);
+    float: left;
+  }
+
+  .@{filter-prefix-cls}-operation-area {
+    text-align: right;
+    width: 150px;
+    float: right;
+  }
+
+  .move-enter {
+    .move-motion(move, antMoveDown);
+  }
+
+
+  // .@{filter-prefix-cls}-panel {
+  //   display: none;
+
+  //   &.@{filter-prefix-cls}-panel-show {
+  //     display: block;
+  //   }
+  // }
+}

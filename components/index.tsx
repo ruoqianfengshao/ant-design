@@ -19,6 +19,8 @@ export { default as Affix } from './affix';
 
 export { default as Anchor } from './anchor';
 
+export { default as Arrange } from './arrange';
+
 export { default as AutoComplete } from './auto-complete';
 
 export { default as Alert } from './alert';
@@ -60,6 +62,8 @@ export { default as Dropdown } from './dropdown';
 export { default as Drawer } from './drawer';
 
 export { default as Empty } from './empty';
+
+export { default as Filter } from './filter';
 
 export { default as Form } from './form';
 
@@ -140,3 +144,5 @@ export { default as Mention } from './mention';
 export { default as Upload } from './upload';
 
 export { default as version } from './version';
+
+export { default as Viewer } from './viewer';
