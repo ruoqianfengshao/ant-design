@@ -96,7 +96,7 @@ class Formbuilder extends Component<FormbuilderProps & FormProps, FormbuilderSta
         if (field.getData) {
           result[name] = field.getData(values[name]);
         } else {
-          result[name] = values[name]
+          result[name] = values[name];
         }
       }
     });
@@ -120,6 +120,8 @@ class Formbuilder extends Component<FormbuilderProps & FormProps, FormbuilderSta
       onSubmit(event);
     }
   }
+
+  getFields = () => this.state.fields;
 
   syncFields = (fields: any) => {
     this.setState(state => {

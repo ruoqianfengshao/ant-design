@@ -86,7 +86,7 @@ title: Formbuilder
 | labelWidth | field 里的 label 宽度，如果设置会覆盖 css 和 Fields 的 labelWidth | `string\|null` | null |
 | wrapWidth | field 里的 wrap 宽度，如果设置会覆盖 css 和 Fields 的 wrapWidth | `string\|null` |
 | format | 搜集表单数据时，自动转换数据 | 时间组件可直接写`moment`支持的`format`格式，其他表单元素拿到的是一个`Function(value)` | null |
-| setData | 初始化时对 initialValue 的操作 | null |
+| initValue | 初始化时对 initialValue 的处理, 根据不同的 field type 会有默认处理 | null |
 | elementProps | 表单元素原有的属性，将会以高优先级赋予输入项组件，根据type 中表单元素的不同，会有不同的参数 |
 | placeholder | 默认提示文案 | 根据type有不同的默认值 |
 | emptyMessage | 为空时文案 | 根据type有不同的默认值 |

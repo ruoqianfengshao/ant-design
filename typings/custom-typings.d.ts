@@ -89,6 +89,8 @@ declare module '*.json' {
   export default value;
 }
 
+declare module 'lodash/get';
+
 declare module 'lodash/debounce';
 
 declare module 'lodash/merge';

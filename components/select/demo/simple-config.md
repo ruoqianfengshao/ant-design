@@ -18,17 +18,17 @@ import { Select } from 'antd';
 
 const config1 = {
   options: [{
-    title: 'jack',
+    label: 'jack',
     value: 'jack',
   },{
-    title: 'lucy',
+    label: 'lucy',
     value: 'lucy',
   },{
-    title: 'disabled',
+    label: 'disabled',
     value: 'disabled',
     disabled: true,
   },{
-    title: 'Yiminghe',
+    label: 'Yiminghe',
     value: 'Yiminghe',
   }],
 }
@@ -37,9 +37,8 @@ const config2 = {
   showSearch: true,
   filterOption: false,
   style: { width: 120 },
-  titleKey: 'title',
   onSearch: (val) => new Promise((resolve) => resolve([1,2,3,4,5].map(i => ({
-    title: val + i,
+    label: val + i,
     value: val + i,
   })))),
 }

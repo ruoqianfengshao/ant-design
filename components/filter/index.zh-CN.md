@@ -20,3 +20,5 @@ fields | 筛选表单项集合 | `FieldItemProps[]` | []
 firstLineLimit | 第一行显示表单项个数 | `number` | 3
 customCount | 自定义保存筛选条件的个数 | 1
 prefixCls | 组件前缀 | `string` | 'antd'
+onSubmit | 提交按钮的回调方法 | `function(values, e) => void` | 'null'
+onReset | 重置按钮的回调方法 | `function(values, e) => void` | 'null'

@@ -270,7 +270,7 @@ export default class Select<T = SelectValue> extends React.Component<SelectProps
       prefixCls: customizePrefixCls,
       className = '',
       valueKey = 'value',
-      labelKey = 'title',
+      labelKey = 'label',
       size,
       mode,
       optionNode,

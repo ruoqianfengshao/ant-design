@@ -39,8 +39,6 @@ export { default as Calendar } from './calendar';
 
 export { default as Card } from './card';
 
-export { default as Collapse } from './collapse';
-
 export { default as Carousel } from './carousel';
 
 export { default as Cascader } from './cascader';
@@ -49,9 +47,13 @@ export { default as Checkbox } from './checkbox';
 
 export { default as Col } from './col';
 
+export { default as Collapse } from './collapse';
+
 export { default as Comment } from './comment';
 
 export { default as ConfigProvider } from './config-provider';
+
+export { default as Container } from './container';
 
 export { default as DatePicker } from './date-picker';
 

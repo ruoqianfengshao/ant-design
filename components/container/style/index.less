@@ -1,0 +1,59 @@
+@import '../../style/themes/default';
+
+@container-padding: 16px;
+@container-margin: 16px;
+@container-footer-border-color: @border-color-base;
+
+.pk-container {
+  background-color: #fff;
+  border-radius: 3px;
+
+  .pk-container-header {
+    border-bottom: 1px solid @border-color-base;
+  }
+
+  .pk-container-title {
+    padding: 14px;
+    font-size: 14px;
+    color: #333333;
+    letter-spacing: 0;
+    line-height: 18px;
+  }
+
+  .pk-container-operation {
+    padding: 14px;
+    line-height: 18px;
+    text-align: right;
+  }
+
+  .pk-container-content {
+    padding: 16px;
+  }
+
+  .pk-container-footer {
+    padding: 0 16px 16px;
+
+    &.top-border {
+      padding: 16px;
+      border-top: 1px solid @container-footer-border-color;
+    }
+  }
+
+  & ~ .pk-container {
+    margin-top: @container-margin;
+  }
+
+  .pk-container-content > .pk-panel {
+    .pk-panel-item-first-line {
+      margin-top: 0;
+    }
+  }
+
+  .pk-container-operation .ant-form-item {
+    margin-bottom: 0;
+
+    .ant-form-item-control-wrapper {
+      line-height: inherit;
+    }
+  }
+}

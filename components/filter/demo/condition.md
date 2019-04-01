@@ -33,17 +33,17 @@ const fields = [{
   label: '用户状态',
   elementProps: {
     options: [{
-      title: '正常',
+      label: '正常',
       value: '1',
     },{
-      title: '冻结',
+      label: '冻结',
       value: '-1',
     },{
-      title: '未激活',
+      label: '未激活',
       value: '0',
     }],
   },
-  initialValue: '1',
+  initialValue: [{label: '正常', value: '1'}],
 }, {
   name: 'job',
   type: 'text',

@@ -1,58 +1,55 @@
-import React from 'react'
-import get from 'lodash/get'
-import Select from '../../select'
+import React from 'react';
+import get from 'lodash/get';
+import Select, { SelectProps } from '../../select';
 
-export default class ComplexSelect extends React.Component {
+export default class ComplexSelect extends React.Component<SelectProps> {
   static defaultProps = {
     labelKey: 'label',
     valueKey: 'value',
-  }
+  };
 
-  static getDerivedStateFromProps (nextProps) {
+  static getDerivedStateFromProps(nextProps: SelectProps) {
     // Should be a controlled component.
     if ('value' in nextProps) {
       return {
         ...(nextProps.value ? { selectedOptions: nextProps.value } : {}),
-      }
+      };
     }
-    return null
+    return null;
   }
 
   state = {
     selectedOptions: this.props.value || [],
+  };
+
+  initValue(value: any) {
+    const { valueKey } = this.props;
+    return value.map((option: any) => get(option, valueKey));
   }
 
-  initValue (value) {
-    const { valueKey } = this.props
-    return value.map(option => get(option, valueKey))
-  }
-
-  handleChange = (value, selectedOptions) => {
-    const options = [].concat(selectedOptions)
-    const result = options.map(o => o.props.option)
+  handleChange = (value: any, selectedOptions: any) => {
+    const options = [].concat(selectedOptions);
+    const result = options.map(o => o!.props.option);
     if (!('value' in this.props)) {
-      this.setState({ selectedOptions: result })
+      this.setState({ selectedOptions: result });
     }
-    this.triggerChange(result, selectedOptions: options)
-  }
+    this.triggerChange(result, selectedOptions);
+  };
 
-  triggerChange = (changedValue, selectedOptions) => {
-    // Should provide an event to pass value to Form.
-    const { onChange } = this.props
+  triggerChange = (changedValue: any, selectedOptions: any) => {
+    const { onChange } = this.props;
     if (onChange) {
-      onChange(changedValue, selectedOptions)
+      onChange(changedValue, selectedOptions);
     }
-  }
+  };
 
-  render () {
+  render() {
     return (
-      <React.Fragment>
-        <Select
-          {...this.props}
-          value={this.initValue(this.state.selectedOptions)}
-          onChange={this.handleChange}
-        />
-      </React.Fragment>
-    )
+      <Select
+        {...this.props}
+        value={this.initValue(this.state.selectedOptions)}
+        onChange={this.handleChange}
+      />
+    );
   }
 }

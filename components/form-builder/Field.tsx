@@ -6,7 +6,7 @@ import Tree from '../tree';
 import TreeSelect from '../tree-select';
 import Radio from '../radio';
 import Checkbox from '../checkbox';
-import Select from '../select';
+import Select from './elements/select';
 import Cascader from '../cascader';
 import DatePicker from '../date-picker';
 import TimePicker from '../time-picker';
@@ -31,17 +31,19 @@ export type FieldProps = {
 
 export interface FieldItemProps extends FormItemProps {
   type: string;
-  show: boolean;
+  show?: boolean;
   name: string;
-  value: any;
-  initialValue: any;
-  elementProps: ElementProps;
-  validator: Array<Object>;
-  follow: any;
-  resetValue: boolean;
-  emptyMessage: string;
-  getValueFromEvent: (e: any) => any;
-  onFieldChange:
+  fieldNames: string[];
+  value?: any;
+  initialValue?: any;
+  elementProps?: ElementProps;
+  validator?: { [key: string]: any }[];
+  follow?: any;
+  resetValue?: boolean;
+  emptyMessage?: string;
+  getValueFromEvent?: (e: any) => any;
+  initValue?: (value: any) => any;
+  onFieldChange?:
     | ((values: { [key: string]: any }, form: any, options: any) => FieldItemProps[])
     | FieldItemProps[];
 }
@@ -94,7 +96,7 @@ export default class Field extends React.Component<FieldProps> {
     const { onFieldChange, name } = this.props.field;
 
     if (onFieldChange) {
-      await new Promise(async (resolve) => {
+      await new Promise(async resolve => {
         const actionFields =
           onFieldChange instanceof Array
             ? onFieldChange
